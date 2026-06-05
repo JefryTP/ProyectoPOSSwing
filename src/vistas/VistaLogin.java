@@ -46,7 +46,7 @@ public class VistaLogin extends javax.swing.JFrame {
 
         jLabel2.setText("Contraseña");
 
-        jLabel3.setText("Hola");
+        jLabel3.setText("Hola Modificado");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
