@@ -62,7 +62,7 @@ File → Open Project → selecciona la carpeta del repositorio.
 ## Rutina diaria de trabajo
 
 ### Al inicio del día — actualizar tu rama
-En NetBeans: **Team → Remote → Pull**
+En NetBeans: **Git → Remote → Pull**
 
 En la ventana que aparece marca solo:
 - ✅ `develop -> origin/develop`
@@ -72,7 +72,7 @@ Esto trae los últimos cambios del proyecto a tu rama.
 ### Durante el día — guardar tu avance
 Cada vez que termines algo concreto guarda tu progreso.
 
-En NetBeans: **Team → Git → Commit**
+En NetBeans: **Git → Commit**
 - Escribe un mensaje describiendo lo que hiciste
 - Ejemplos de buenos mensajes:
   - `agrega pantalla de ventas`
