@@ -30,7 +30,7 @@ public class VistaLogin extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
 
@@ -40,7 +40,8 @@ public class VistaLogin extends javax.swing.JFrame {
 
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
-        jButton1.setText("Ingresar");
+        btnIngresar.setText("Ingresar");
+        btnIngresar.addActionListener(this::btnIngresarActionPerformed);
 
         jLabel2.setText("Contraseña");
 
@@ -50,7 +51,7 @@ public class VistaLogin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnIngresar)
                 .addGap(148, 148, 148))
             .addGroup(layout.createSequentialGroup()
                 .addGap(84, 84, 84)
@@ -75,7 +76,7 @@ public class VistaLogin extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
-                .addComponent(jButton1)
+                .addComponent(btnIngresar)
                 .addContainerGap(81, Short.MAX_VALUE))
         );
 
@@ -86,8 +87,17 @@ public class VistaLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+
+        VistaCaja vistacaja = new VistaCaja();
+
+        vistacaja.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_btnIngresarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField1;
