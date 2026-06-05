@@ -81,7 +81,7 @@ En NetBeans: **Git → Commit**
 - Clic en **Commit**
 
 ### Al terminar — subir tu trabajo
-En NetBeans: **Team → Remote → Push**
+En NetBeans: **Git → Remote → Push**
 
 Confirma que sube a `programador/tu-nombre` y clic en **Finish**.
 
@@ -119,4 +119,4 @@ Inicio del día
 ---
 
 ## Contacto
-Cualquier duda o conflicto en el código contactar a Jefry antes de hacer cualquier merge.
+Cualquier duda o conflicto en el código contactar a Jefry 943522944 antes de hacer cualquier merge.
