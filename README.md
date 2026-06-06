@@ -7,12 +7,9 @@ Proyecto final de la materia de Programación Orientada a Objetos.
 | Integrante | Rama |
 |---|---|
 | Jefry | `programador/jefry` |
-| Edilson | `programador/edilson` |
-| Jair | `programador/jair` |
-| Joffre | `programador/joffre` |
-| Jaren | `programador/jaren` |
-| Jim | `programador/jim` |
-| Jefferson | `programador/jefferson` |
+| Edilson | `programador/stian` |
+| Jair | `programador/francesco` |
+| Joffre | `programador/----` |
 
 ---
 
@@ -46,12 +43,8 @@ cd ProyectoPOSSwing
 ### 4. Ubicarte en TU rama
 Cada integrante ejecuta solo la línea que le corresponde:
 ```bash
-git checkout programador/edilson
-git checkout programador/jair
-git checkout programador/joffre
-git checkout programador/jaren
-git checkout programador/jim
-git checkout programador/jefferson
+git checkout programador/stian
+git checkout programador/francesco
 ```
 
 ### 5. Abrir el proyecto en NetBeans
