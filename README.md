@@ -7,9 +7,9 @@ Proyecto final de la materia de Programación Orientada a Objetos.
 | Integrante | Rama |
 |---|---|
 | Jefry | `programador/jefry` |
-| Edilson | `programador/stian` |
-| Jair | `programador/francesco` |
-| Joffre | `programador/----` |
+| Stian | `programador/stian` |
+| Francesco | `programador/francesco` |
+| ------- | `programador/----` |
 
 ---
 
