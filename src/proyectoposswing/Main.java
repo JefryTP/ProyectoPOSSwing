@@ -1,6 +1,6 @@
 package proyectoposswing;
 
-import vistas.*;
+import vistas.VistaLogin;
 
 public class Main {
 
