@@ -1,12 +1,15 @@
 package proyectoposswing;
 
-import vistas.VistaLogin;
-
+import vistas.LoginElaborado;
 public class Main {
 
     public static void main(String[] args) {
-        VistaLogin mivista = new VistaLogin();
-        mivista.setVisible(true);
+       java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                // Instanciamos la vista y la hacemos visible
+                new LoginElaborado().setVisible(true);
+            }
+        });
     }
     
 }

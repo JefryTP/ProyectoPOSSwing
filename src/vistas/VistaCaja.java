@@ -150,12 +150,7 @@ public static void main(String args[]) {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        
-        VistaLogin vistalogin = new VistaLogin();
 
-        vistalogin.setVisible(true);
-
-        this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
 
