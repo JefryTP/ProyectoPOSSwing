@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Conexion {
 
     protected Connection conn;
-    private final String DB_URL = "jdbc:mysql://localhost:3306/bodega_pos";
+    private final String DB_URL = "jdbc:mysql://localhost:3306/bdahorramax ";
     private final String USUAR = "root";
     private final String CONTR = "admin123";
 
