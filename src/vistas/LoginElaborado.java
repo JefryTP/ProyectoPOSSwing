@@ -8,6 +8,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 public class LoginElaborado extends JFrame {
 
     public LoginElaborado() {
@@ -116,6 +117,28 @@ public class LoginElaborado extends JFrame {
         btnIngresar.setFont(new Font("SansSerif", Font.BOLD, 14));
         btnIngresar.setFocusPainted(false);
         btnIngresar.setBorder(new BordeRedondo(15)); 
+        
+        // --- LÓGICA DE LOGIN AGREGADA AQUÍ ---
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                String usuario = txtCodigo.getText();
+                String password = new String(txtContrasena.getPassword());
+
+                // Validamos con las credenciales quemadas en el código
+                if (usuario.equals("admin") && password.equals("123")) {
+                    dispose(); // Cierra el login
+                    vistas.Menu ventanaMenu = new vistas.Menu();
+                    ventanaMenu.setVisible(true); // Abre el menú
+                } else {
+                    JOptionPane.showMessageDialog(LoginElaborado.this, 
+                        "El código o la contraseña son incorrectos.", 
+                        "Error de Autenticación", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        // -------------------------------------
+
         panelIzquierdo.add(btnIngresar);
 
         // ==========================================
@@ -168,7 +191,6 @@ public class LoginElaborado extends JFrame {
         add(panelDerecho);   
     }
 }
-
 
 class BordeRedondo implements Border {
     private int radio;
