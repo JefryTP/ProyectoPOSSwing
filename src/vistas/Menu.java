@@ -100,7 +100,13 @@ public class Menu extends JFrame {
 
         // Lógica de los botones
         if (text.equals("Salir")) {
-            button.addActionListener(e -> System.exit(0));
+            button.addActionListener(e -> {dispose(); // Cierra el login
+                    vistas.LoginElaborado ventanaLogin = new vistas.LoginElaborado();
+                    ventanaLogin.setVisible(true);});
+        }if (text.equals("Caja")) {
+            button.addActionListener(e -> {dispose(); // Cierra el login
+                    vistas.VistaCaja ventanaCaja = new vistas.VistaCaja();
+                    ventanaCaja.setVisible(true);});
         } else {
             button.addActionListener(e -> System.out.println("Clic en: " + text));
         }
