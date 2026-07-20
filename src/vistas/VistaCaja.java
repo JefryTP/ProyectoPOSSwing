@@ -347,6 +347,7 @@ public static void main(String args[]) {
         btnPagar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ProyectoPOS - Caja");
         setMinimumSize(new java.awt.Dimension(720, 480));
 
         btnSalir.setBackground(new java.awt.Color(51, 51, 51));

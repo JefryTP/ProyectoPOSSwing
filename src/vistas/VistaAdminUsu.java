@@ -66,6 +66,7 @@ public class VistaAdminUsu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ProyectoPOS - Gestion Usuarios");
         setBackground(new java.awt.Color(139, 204, 237));
         setMinimumSize(new java.awt.Dimension(720, 360));
 
