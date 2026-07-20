@@ -13,7 +13,6 @@ import modelo.Usuario;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
-
 public class VistaAdminUsu extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaAdminUsu.class.getName());
@@ -308,103 +307,102 @@ public class VistaAdminUsu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-    
-    try {
- 
-        String dato = txtBuscar.getText().trim();
- 
-        DAOUsuario dao = new DAOUsuarioImpl();
-        ResultSet rs = dao.buscar(dato);
- 
-        DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
-        modelo.setRowCount(0);
- 
-        while (rs.next()) {
- 
-            modelo.addRow(new Object[]{
-                rs.getString("dni"),
-                rs.getString("nombre"),
-                rs.getString("apellido"),
-                rs.getString("telefono"),
-                rs.getString("correo"),
-                rs.getString("rol"),
-                rs.getInt("activo") == 1 ? "Activo" : "Inactivo",
-                rs.getString("clave")
-            });
- 
+
+        try {
+
+            String dato = txtBuscar.getText().trim();
+
+            DAOUsuario dao = new DAOUsuarioImpl();
+            ResultSet rs = dao.buscar(dato);
+
+            DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+            modelo.setRowCount(0);
+
+            while (rs.next()) {
+
+                modelo.addRow(new Object[]{
+                    rs.getString("dni"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido"),
+                    rs.getString("telefono"),
+                    rs.getString("correo"),
+                    rs.getString("rol"),
+                    rs.getInt("activo") == 1 ? "Activo" : "Inactivo",
+                    rs.getString("clave")
+                });
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
- 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jButtonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarActionPerformed
         // Limpiar los campos
-    txtDni.setText("");
-    txtNombre.setText("");
-    txtApellido.setText("");
-    txtTelefono.setText("");
-    txtCorreo.setText("");
-    txtClave.setText("");
- 
-    cmbRol.setSelectedIndex(0);
-    cmbEstado.setSelectedIndex(0);
- 
-    // Limpiar la tabla
-    DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
-    modelo.setRowCount(0);
- 
-    // Colocar el cursor en el primer campo
-    txtDni.requestFocus();
- 
-    JOptionPane.showMessageDialog(this, "Formulario y tabla limpiados correctamente.");
+        txtDni.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtTelefono.setText("");
+        txtCorreo.setText("");
+        txtClave.setText("");
+
+        cmbRol.setSelectedIndex(0);
+        cmbEstado.setSelectedIndex(0);
+
+        // Limpiar la tabla
+        DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+        modelo.setRowCount(0);
+
+        // Colocar el cursor en el primer campo
+        txtDni.requestFocus();
+
+        JOptionPane.showMessageDialog(this, "Formulario y tabla limpiados correctamente.");
     }//GEN-LAST:event_jButtonLimpiarActionPerformed
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
         int fila = tblUsuarios.getSelectedRow();
- 
-    if (fila == -1) {
-        JOptionPane.showMessageDialog(this, "Seleccione un usuario.");
-        return;
-    }
- 
-    int respuesta = JOptionPane.showConfirmDialog(
-            this,
-            "¿Desea eliminar este usuario?",
-            "Confirmar",
-            JOptionPane.YES_NO_OPTION);
- 
-    if (respuesta == JOptionPane.YES_OPTION) {
- 
-        try {
- 
-            Usuario usu = new Usuario();
- 
-            // Como tu tabla muestra el DNI en la primera columna
-            usu.setDni(tblUsuarios.getValueAt(fila, 0).toString());
- 
-            DAOUsuario dao = new DAOUsuarioImpl();
-            dao.eliminar(usu);
- 
-            // Eliminar la fila de la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
-            modelo.removeRow(fila);
- 
-            JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente.");
- 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario.");
+            return;
         }
-    }
+
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea eliminar este usuario?",
+                "Confirmar",
+                JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            try {
+
+                Usuario usu = new Usuario();
+
+                usu.setDni(tblUsuarios.getValueAt(fila, 0).toString());
+
+                DAOUsuario dao = new DAOUsuarioImpl();
+                dao.eliminar(usu);
+
+                // Eliminar la fila de la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+                modelo.removeRow(fila);
+
+                JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente.");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     private void jButtonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNuevoActionPerformed
 
         try {
- 
+
             Usuario usu = new Usuario();
- 
+
             usu.setDni(txtDni.getText().trim());
             usu.setNombre(txtNombre.getText().trim());
             usu.setApellido(txtApellido.getText().trim());
@@ -412,19 +410,14 @@ public class VistaAdminUsu extends javax.swing.JFrame {
             usu.setCorreo(txtCorreo.getText().trim());
             usu.setClave(txtClave.getText().trim());
             usu.setIdRol(cmbRol.getSelectedIndex() + 1);
-            // CORRECCIÓN: antes no se seteaba el estado, así que todo usuario
-            // nuevo quedaba inactivo (boolean por defecto = false) y no podía
-            // iniciar sesión. Se toma el valor real del combo Estado.
             usu.setActivo(cmbEstado.getSelectedItem().toString().equals("Activo"));
- 
-            System.out.println("DNI = " + usu.getDni());
-            System.out.println("Nombre = " + usu.getNombre());
+
             DAOUsuario dao = new DAOUsuarioImpl();
             dao.registrar(usu);
- 
+
             // Agregar a la tabla
             DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
- 
+
             modelo.addRow(new Object[]{
                 usu.getDni(),
                 usu.getNombre(),
@@ -435,9 +428,9 @@ public class VistaAdminUsu extends javax.swing.JFrame {
                 cmbEstado.getSelectedItem(),
                 usu.getClave()
             });
- 
+
             JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
- 
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
@@ -445,42 +438,41 @@ public class VistaAdminUsu extends javax.swing.JFrame {
 
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         try {
- 
-        Usuario usu = new Usuario();
- 
-        usu.setDni(txtDni.getText().trim());
-        usu.setNombre(txtNombre.getText().trim());
-        usu.setApellido(txtApellido.getText().trim());
-        usu.setTelefono(txtTelefono.getText().trim());
-        usu.setCorreo(txtCorreo.getText().trim());
-        usu.setClave(txtClave.getText().trim());
- 
-        usu.setIdRol(cmbRol.getSelectedIndex() + 1);
- 
-        // CORRECCIÓN: usu.setActivo() ahora espera boolean, no int (0/1)
-        usu.setActivo(cmbEstado.getSelectedItem().toString().equals("Activo"));
- 
-        DAOUsuario dao = new DAOUsuarioImpl();
-        dao.modificar(usu);
- 
-        int fila = tblUsuarios.getSelectedRow();
- 
-        if (fila != -1) {
-            tblUsuarios.setValueAt(usu.getDni(), fila, 0);
-            tblUsuarios.setValueAt(usu.getNombre(), fila, 1);
-            tblUsuarios.setValueAt(usu.getApellido(), fila, 2);
-            tblUsuarios.setValueAt(usu.getTelefono(), fila, 3);
-            tblUsuarios.setValueAt(usu.getCorreo(), fila, 4);
-            tblUsuarios.setValueAt(cmbRol.getSelectedItem().toString(), fila, 5);
-            tblUsuarios.setValueAt(cmbEstado.getSelectedItem().toString(), fila, 6);
-            tblUsuarios.setValueAt(usu.getClave(), fila, 7);
+
+            Usuario usu = new Usuario();
+
+            usu.setDni(txtDni.getText().trim());
+            usu.setNombre(txtNombre.getText().trim());
+            usu.setApellido(txtApellido.getText().trim());
+            usu.setTelefono(txtTelefono.getText().trim());
+            usu.setCorreo(txtCorreo.getText().trim());
+            usu.setClave(txtClave.getText().trim());
+
+            usu.setIdRol(cmbRol.getSelectedIndex() + 1);
+
+            usu.setActivo(cmbEstado.getSelectedItem().toString().equals("Activo"));
+
+            DAOUsuario dao = new DAOUsuarioImpl();
+            dao.modificar(usu);
+
+            int fila = tblUsuarios.getSelectedRow();
+
+            if (fila != -1) {
+                tblUsuarios.setValueAt(usu.getDni(), fila, 0);
+                tblUsuarios.setValueAt(usu.getNombre(), fila, 1);
+                tblUsuarios.setValueAt(usu.getApellido(), fila, 2);
+                tblUsuarios.setValueAt(usu.getTelefono(), fila, 3);
+                tblUsuarios.setValueAt(usu.getCorreo(), fila, 4);
+                tblUsuarios.setValueAt(cmbRol.getSelectedItem().toString(), fila, 5);
+                tblUsuarios.setValueAt(cmbEstado.getSelectedItem().toString(), fila, 6);
+                tblUsuarios.setValueAt(usu.getClave(), fila, 7);
+            }
+
+            JOptionPane.showMessageDialog(this, "Usuario actualizado correctamente.");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
- 
-        JOptionPane.showMessageDialog(this, "Usuario actualizado correctamente.");
- 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     private void cmbRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRolActionPerformed
@@ -488,25 +480,25 @@ public class VistaAdminUsu extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbRolActionPerformed
 
     private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
-        
-    int fila = tblUsuarios.getSelectedRow();
- 
-    if (fila != -1) {
- 
-        txtDni.setText(tblUsuarios.getValueAt(fila, 0).toString());
-        txtNombre.setText(tblUsuarios.getValueAt(fila, 1).toString());
-        txtApellido.setText(tblUsuarios.getValueAt(fila, 2).toString());
-        txtTelefono.setText(tblUsuarios.getValueAt(fila, 3).toString());
-        txtCorreo.setText(tblUsuarios.getValueAt(fila, 4).toString());
-        cmbRol.setSelectedItem(tblUsuarios.getValueAt(fila, 5).toString());
-        cmbEstado.setSelectedItem(tblUsuarios.getValueAt(fila, 6).toString());
-        txtClave.setText(tblUsuarios.getValueAt(fila, 7).toString());
- 
-    } else {
- 
-        JOptionPane.showMessageDialog(this, "Seleccione un usuario.");
- 
-    }
+
+        int fila = tblUsuarios.getSelectedRow();
+
+        if (fila != -1) {
+
+            txtDni.setText(tblUsuarios.getValueAt(fila, 0).toString());
+            txtNombre.setText(tblUsuarios.getValueAt(fila, 1).toString());
+            txtApellido.setText(tblUsuarios.getValueAt(fila, 2).toString());
+            txtTelefono.setText(tblUsuarios.getValueAt(fila, 3).toString());
+            txtCorreo.setText(tblUsuarios.getValueAt(fila, 4).toString());
+            cmbRol.setSelectedItem(tblUsuarios.getValueAt(fila, 5).toString());
+            cmbEstado.setSelectedItem(tblUsuarios.getValueAt(fila, 6).toString());
+            txtClave.setText(tblUsuarios.getValueAt(fila, 7).toString());
+
+        } else {
+
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario.");
+
+        }
     }//GEN-LAST:event_jButtonEditarActionPerformed
 
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed

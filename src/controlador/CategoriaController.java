@@ -13,8 +13,6 @@ public class CategoriaController {
     public CategoriaController() {
         this.dao = new DAOCategoriaImpl();
     }
- 
-    // Acción para listar las categorías (para el JComboBox)
     public List<Categoria> listar() {
         try {
             return dao.listar();

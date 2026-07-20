@@ -18,6 +18,5 @@ public interface DAOUsuario {
 
     public List<Usuario> listar() throws Exception;
 
-    // Búsqueda flexible por dni/nombre/rol para la tabla de VistaAdminUsu
     public ResultSet buscar(String dato) throws Exception;
 }

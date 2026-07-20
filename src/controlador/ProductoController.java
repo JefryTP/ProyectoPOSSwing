@@ -5,18 +5,12 @@ import interfaces.DAOProducto;
 import modelo.Producto;
 
 public class ProductoController {
- 
-    // El controlador depende de la interfaz, no de la implementación (desacoplamiento)
     private final DAOProducto dao;
  
     public ProductoController() {
         this.dao = new DAOProductoImpl();
     }
- 
-    /**
-     * Uso: Caja. Solo devuelve el producto si existe Y está activo, para
-     * evitar vender algo que el admin desactivó.
-     */
+
     public Producto buscarPorCodigo(String codigo) {
         try {
             if (codigo == null || codigo.trim().isEmpty()) {
@@ -33,11 +27,6 @@ public class ProductoController {
             return null;
         }
     }
- 
-    /**
-     * Uso: Administración de productos. Devuelve el producto exista o no
-     * esté activo, porque desde aquí también se debe poder reactivarlo.
-     */
     public Producto buscarPorCodigoAdmin(String codigo) {
         try {
             if (codigo == null || codigo.trim().isEmpty()) {
@@ -50,8 +39,7 @@ public class ProductoController {
             return null;
         }
     }
- 
-    // Acción para registrar un producto nuevo (valida que el código no exista)
+
     public String registrar(Producto producto) {
         try {
             if (producto.getCodigo() == null || producto.getCodigo().trim().isEmpty()) {
@@ -77,8 +65,7 @@ public class ProductoController {
             return "Error al registrar el producto: " + e.getMessage();
         }
     }
- 
-    // Acción para modificar un producto existente (valida que el código sí exista)
+
     public String modificar(Producto producto) {
         try {
             if (producto.getDescripcion() == null || producto.getDescripcion().trim().isEmpty()) {
@@ -93,8 +80,7 @@ public class ProductoController {
                 return "Error: no existe ningún producto con el código " + producto.getCodigo()
                         + ". Use Agregar en su lugar.";
             }
- 
-            // Aseguramos que se actualice el registro correcto (por id real de la BD)
+
             producto.setId(existente.getId());
             dao.modificar(producto);
             return "Producto modificado con éxito.";
@@ -103,8 +89,7 @@ public class ProductoController {
             return "Error al modificar el producto: " + e.getMessage();
         }
     }
- 
-    // Acción para eliminar físicamente un producto por su código
+
     public String eliminar(String codigo) {
         try {
             Producto existente = dao.buscarPorCodigo(codigo.trim());
@@ -116,7 +101,6 @@ public class ProductoController {
             return "Producto eliminado con éxito.";
  
         } catch (Exception e) {
-            // Ocurre cuando el producto ya tiene ventas registradas (llave foránea)
             return "Error: no se puede eliminar. El producto tiene ventas registradas; "
                     + "puede desactivarlo en su lugar.";
         }

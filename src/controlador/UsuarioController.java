@@ -14,7 +14,6 @@ public class UsuarioController {
         this.dao = new DAOUsuarioImpl();
     }
 
-    // Acción para autenticar un usuario contra la base de datos (dni + clave)
     public Usuario login(String dni, String clave) {
         try {
             if (dni == null || dni.trim().isEmpty() || clave == null || clave.isEmpty()) {
@@ -37,7 +36,6 @@ public class UsuarioController {
         }
     }
 
-    // Acción para buscar un usuario por su id (ej. para mostrar el nombre del cajero en la boleta)
     public Usuario buscarPorId(int id) {
         try {
             if (id <= 0) {
@@ -50,11 +48,7 @@ public class UsuarioController {
             return null;
         }
     }
-
-    // ---- CRUD para VistaAdminUsu ----
-    // Estos métodos relanzan la excepción porque VistaAdminUsu ya maneja su
-    // propio try-catch alrededor de cada acción (registrar/modificar/eliminar).
-
+    
     public void registrar(Usuario usu) throws Exception {
         dao.registrar(usu);
     }

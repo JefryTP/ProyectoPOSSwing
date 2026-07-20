@@ -144,13 +144,6 @@ public class DAOUsuarioImpl extends Conexion implements DAOUsuario {
 
     @Override
     public ResultSet buscar(String dato) throws Exception {
-        // NOTA: a diferencia de los demás métodos, aquí NO se cierra la conexión
-        // antes de devolver el ResultSet (si se cerrara, el ResultSet quedaría
-        // inválido). Esto significa que la conexión queda abierta hasta que el
-        // recolector de basura la reclame — no es ideal para un uso intensivo,
-        // pero es aceptable para este proyecto de curso. Una alternativa más
-        // robusta sería que este método arme y devuelva un List<Usuario> ya
-        // materializado (cerrando la conexión aquí mismo), igual que listar().
         String sql = "SELECT u.dni, u.nombre, u.apellido, "
                 + "u.telefono, u.correo, u.clave, "
                 + "r.cargo AS rol, u.activo "

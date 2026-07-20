@@ -12,10 +12,7 @@ public class VistaAdminProduc extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaAdminProduc.class.getName());
     private final ProductoController productoController = new ProductoController();
     private final CategoriaController categoriaController = new CategoriaController();
- 
-    // Lista en el mismo orden que se cargan los items de cmbCate, para poder
-    // recuperar el id real de la categoría a partir del índice seleccionado
-    // (cmbCate solo guarda el nombre como String).
+
     private List<Categoria> listaCategorias = new ArrayList<>();
  
     private static final String[] OPCIONES_ESTADO = {"Activo", "Inactivo"};
@@ -45,11 +42,6 @@ public class VistaAdminProduc extends javax.swing.JFrame {
         cmbEst.setModel(new DefaultComboBoxModel<>(OPCIONES_ESTADO));
     }
  
-    /**
-     * Ubica en cmbCate el item cuyo id de categoría coincide con idCategoria.
-     * Si no lo encuentra (por ejemplo, la categoría fue borrada), deja la
-     * primera opción seleccionada.
-     */
     private void seleccionarCategoriaPorId(int idCategoria) {
         for (int i = 0; i < listaCategorias.size(); i++) {
             if (listaCategorias.get(i).getId() == idCategoria) {
@@ -71,11 +63,7 @@ public class VistaAdminProduc extends javax.swing.JFrame {
         }
         cmbEst.setSelectedIndex(0);
     }
- 
-    /**
-     * Lee y valida el precio ingresado. Devuelve null (y muestra el aviso)
-     * si el texto no es un número válido.
-     */
+
     private Double leerPrecioValido() {
         try {
             double precio = Double.parseDouble(txtPrecio.getText().trim());
@@ -85,11 +73,7 @@ public class VistaAdminProduc extends javax.swing.JFrame {
             return null;
         }
     }
- 
-    /**
-     * Arma un objeto Producto a partir de lo que hay en los campos de texto
-     * y combos en este momento.
-     */
+
     private Producto construirProductoDesdeFormulario(double precio) {
         Producto p = new Producto();
         p.setCodigo(txtCodigo.getText().trim());
@@ -339,9 +323,7 @@ public class VistaAdminProduc extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ingrese un código para buscar.");
             return;
         }
- 
-        // buscarPorCodigoAdmin: a diferencia de Caja, aquí SÍ debe encontrar
-        // productos inactivos (para poder reactivarlos).
+
         Producto p = productoController.buscarPorCodigoAdmin(codigo);
  
         if (p == null) {

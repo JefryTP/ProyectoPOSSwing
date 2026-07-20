@@ -37,12 +37,7 @@ public class VistaCaja extends javax.swing.JFrame {
         configurarTabla();
         configurarListeners();
     }
- 
-    /**
-     * Reemplaza el modelo de tabla que dejó el diseñador visual (4 columnas
-     * "Title 1..4" con 4 filas vacías) por el modelo real que necesita la
-     * caja: 5 columnas, sin filas iniciales, y no editable directamente.
-     */
+
     private void configurarTabla() {
         DefaultTableModel modelo = new DefaultTableModel(COLUMNAS_TABLA, 0) {
             @Override
@@ -53,7 +48,6 @@ public class VistaCaja extends javax.swing.JFrame {
         tablaVenta.setModel(modelo);
         tablaVenta.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
  
-        // Total inicial
         txtTotalPagar.setEditable(false);
         txtTotalPagar.setText("S/. 0.00");
  
@@ -62,10 +56,7 @@ public class VistaCaja extends javax.swing.JFrame {
  
         // Quitar botón
         btnQuitarProd.setEnabled(false);
- 
-        // Reemplaza los "Item 1..4" de prueba del diseñador por los tipos de
-        // documento reales. El orden debe coincidir con los id de la tabla
-        // tipo_documento (1=DNI, 2=RUC, 3=Carnet de Extranjería).
+
         cmbDoc.setModel(new javax.swing.DefaultComboBoxModel<>(
                 new String[]{"DNI", "RUC", "Carnet de Extranjería"}));
     }
@@ -87,7 +78,6 @@ public class VistaCaja extends javax.swing.JFrame {
             return;
         }
  
-        // El controlador ya maneja sus propias excepciones y devuelve null si falla
         Producto producto = productoController.buscarPorCodigo(codigo);
  
         if (producto == null) {
@@ -188,7 +178,6 @@ public class VistaCaja extends javax.swing.JFrame {
  
         double total = calcularTotalActual();
  
-        // Pedimos tipo de pago y monto pagado en un pequeño formulario emergente
         JComboBox<String> cmbTipoPago = new JComboBox<>(new String[]{"EFECTIVO", "TARJETA", "MIXTO"});
         JTextField txtMontoPagado = new JTextField();
         JPanel panelPago = new JPanel(new GridLayout(3, 2, 5, 5));
@@ -225,7 +214,6 @@ public class VistaCaja extends javax.swing.JFrame {
         venta.setTotal(total);
  
         Comprobante comprobante = new Comprobante();
-        // El índice del combo (0,1,2) coincide con el id en tipo_documento (1,2,3)
         comprobante.setIdTipoDoc(cmbDoc.getSelectedIndex() + 1);
         comprobante.setNumDoc(numDoc);
         comprobante.setTipoPago((String) cmbTipoPago.getSelectedItem());
@@ -236,8 +224,6 @@ public class VistaCaja extends javax.swing.JFrame {
  
         if (!mensaje.contains("Error")) {
             imprimirBoleta(venta, comprobante);
- 
-            // Mensaje con el vuelto resaltado (más grande y en negrita)
             String mensajeResaltado = "<html><div style='width:260px;'>"
                     + mensaje.replace("Vuelto:", "<br><span style='font-size:18px; color:#1a7a1a;'><b>Vuelto:")
                     + "</b></span></div></html>";
@@ -247,12 +233,7 @@ public class VistaCaja extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, mensaje);
         }
     }
- 
-    /**
-     * Imprime la boleta en la consola de NetBeans (System.out). Se llama
-     * justo después de registrar la venta con éxito, mientras itemsVenta
-     * todavía tiene los productos (se limpia recién después).
-     */
+
     private void imprimirBoleta(Venta venta, Comprobante comprobante) {
         String nombreCajero = "Cajero #" + venta.getIdUsuario();
         Usuario cajero = usuarioController.buscarPorId(venta.getIdUsuario());
@@ -264,7 +245,7 @@ public class VistaCaja extends javax.swing.JFrame {
         String fechaHora = java.time.LocalDateTime.now()
                 .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
  
-        String linea = "------------------------------------------";
+        String linea = "------------------------------------------------";
  
         StringBuilder sb = new StringBuilder();
         sb.append("\n").append(centrar("AHORRAMAX", linea.length())).append("\n");

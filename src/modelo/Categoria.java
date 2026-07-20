@@ -28,8 +28,7 @@ public class Categoria {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
- 
-    // Para que se vea el nombre (y no la referencia del objeto) dentro del JComboBox
+    
     @Override
     public String toString() {
         return nombre;

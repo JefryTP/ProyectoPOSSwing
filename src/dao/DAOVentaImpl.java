@@ -36,7 +36,6 @@ public class DAOVentaImpl extends Conexion implements DAOVenta {
             stVenta.close();
  
             // 2) Insertar cada línea del ticket en detalle_venta
-            // (subconsulta por código evita tener que buscar antes el id_producto)
             String sqlDetalle = "INSERT INTO detalle_venta (id_venta, id_producto, cantidad, precio_unitario, subtotal) "
                     + "VALUES (?, (SELECT id FROM producto WHERE codigo = ?), ?, ?, ?)";
             PreparedStatement stDetalle = this.conn.prepareStatement(sqlDetalle);
@@ -67,11 +66,11 @@ public class DAOVentaImpl extends Conexion implements DAOVenta {
             stComprobante.executeUpdate();
             stComprobante.close();
  
-            this.conn.commit(); // todo salió bien, confirmamos los 3 inserts juntos
+            this.conn.commit();
  
         } catch (Exception e) {
             if (this.conn != null) {
-                this.conn.rollback(); // algo falló, deshacemos todo (no queda venta a medias)
+                this.conn.rollback();
             }
             throw e;
         } finally {

@@ -15,7 +15,6 @@ public class VentaController {
         this.dao = new DAOVentaImpl();
     }
 
-    // Acción para registrar una venta completa (cabecera + detalle + comprobante)
     public String registrarVenta(Venta venta, List<ItemVenta> items, Comprobante comprobante) {
         try {
             if (items == null || items.isEmpty()) {
@@ -29,7 +28,7 @@ public class VentaController {
             }
 
             long idVenta = dao.registrar(venta, items, comprobante);
-            venta.setId(idVenta); // para que quien llamó pueda usarlo (ej. imprimir la boleta)
+            venta.setId(idVenta);
             return "Venta registrada con éxito. N° de venta: " + idVenta
                     + " | Vuelto: S/. " + String.format("%.2f", comprobante.getVuelto());
 

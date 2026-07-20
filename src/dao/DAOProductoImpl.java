@@ -88,9 +88,6 @@ public class DAOProductoImpl extends Conexion implements DAOProducto{
             st.executeUpdate();
             st.close();
         } catch (Exception e) {
-            // Si el producto ya tiene ventas asociadas, MySQL rechaza el DELETE
-            // por la restricción de llave foránea (detalle_venta.id_producto).
-            // Se relanza la excepción; el Controller decide el mensaje amigable.
             throw e;
         } finally {
             this.cerrar();
