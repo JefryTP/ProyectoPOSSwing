@@ -1,6 +1,7 @@
 package vistas;
 
 import controlador.ProductoController;
+import controlador.UsuarioController;
 import controlador.VentaController;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import modelo.Comprobante;
 import modelo.ItemVenta;
 import modelo.Producto;
 import modelo.Sesion;
+import modelo.Usuario;
 import modelo.Venta;
 
 public class VistaCaja extends javax.swing.JFrame {
@@ -23,9 +25,9 @@ public class VistaCaja extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaCaja.class.getName());
 
  // ================== LÓGICA DE NEGOCIO ==================
-
     private final ProductoController productoController = new ProductoController();
     private final VentaController ventaController = new VentaController();
+    private final UsuarioController usuarioController = new UsuarioController();
     private final List<ItemVenta> itemsVenta = new ArrayList<>();
     private static final String[] COLUMNAS_TABLA = {"Código", "Producto", "Cantidad", "Precio", "Subtotal"};
  
@@ -36,6 +38,11 @@ public class VistaCaja extends javax.swing.JFrame {
         configurarListeners();
     }
  
+    /**
+     * Reemplaza el modelo de tabla que dejó el diseñador visual (4 columnas
+     * "Title 1..4" con 4 filas vacías) por el modelo real que necesita la
+     * caja: 5 columnas, sin filas iniciales, y no editable directamente.
+     */
     private void configurarTabla() {
         DefaultTableModel modelo = new DefaultTableModel(COLUMNAS_TABLA, 0) {
             @Override
@@ -49,11 +56,16 @@ public class VistaCaja extends javax.swing.JFrame {
         // Total inicial
         txtTotalPagar.setEditable(false);
         txtTotalPagar.setText("S/. 0.00");
-
+ 
+        // Cantidad mínima de 1 (evita agregar con cantidad 0)
         spiCant.setModel(new javax.swing.SpinnerNumberModel(1, 1, 999, 1));
-
+ 
+        // Quitar botón
         btnQuitarProd.setEnabled(false);
-
+ 
+        // Reemplaza los "Item 1..4" de prueba del diseñador por los tipos de
+        // documento reales. El orden debe coincidir con los id de la tabla
+        // tipo_documento (1=DNI, 2=RUC, 3=Carnet de Extranjería).
         cmbDoc.setModel(new javax.swing.DefaultComboBoxModel<>(
                 new String[]{"DNI", "RUC", "Carnet de Extranjería"}));
     }
@@ -75,6 +87,7 @@ public class VistaCaja extends javax.swing.JFrame {
             return;
         }
  
+        // El controlador ya maneja sus propias excepciones y devuelve null si falla
         Producto producto = productoController.buscarPorCodigo(codigo);
  
         if (producto == null) {
@@ -161,7 +174,7 @@ public class VistaCaja extends javax.swing.JFrame {
         return total;
     }
  
-     private void btnPagarClic() {
+    private void btnPagarClic() {
         if (itemsVenta.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Agregue al menos un producto antes de pagar.");
             return;
@@ -176,7 +189,7 @@ public class VistaCaja extends javax.swing.JFrame {
         double total = calcularTotalActual();
  
         // Pedimos tipo de pago y monto pagado en un pequeño formulario emergente
-        JComboBox<String> cmbTipoPago = new JComboBox<>(new String[]{"EFECTIVO", "TARJETA"});
+        JComboBox<String> cmbTipoPago = new JComboBox<>(new String[]{"EFECTIVO", "TARJETA", "MIXTO"});
         JTextField txtMontoPagado = new JTextField();
         JPanel panelPago = new JPanel(new GridLayout(3, 2, 5, 5));
         panelPago.add(new JLabel("Total a pagar:"));
@@ -222,6 +235,8 @@ public class VistaCaja extends javax.swing.JFrame {
         String mensaje = ventaController.registrarVenta(venta, itemsVenta, comprobante);
  
         if (!mensaje.contains("Error")) {
+            imprimirBoleta(venta, comprobante);
+ 
             // Mensaje con el vuelto resaltado (más grande y en negrita)
             String mensajeResaltado = "<html><div style='width:260px;'>"
                     + mensaje.replace("Vuelto:", "<br><span style='font-size:18px; color:#1a7a1a;'><b>Vuelto:")
@@ -231,6 +246,71 @@ public class VistaCaja extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, mensaje);
         }
+    }
+ 
+    /**
+     * Imprime la boleta en la consola de NetBeans (System.out). Se llama
+     * justo después de registrar la venta con éxito, mientras itemsVenta
+     * todavía tiene los productos (se limpia recién después).
+     */
+    private void imprimirBoleta(Venta venta, Comprobante comprobante) {
+        String nombreCajero = "Cajero #" + venta.getIdUsuario();
+        Usuario cajero = usuarioController.buscarPorId(venta.getIdUsuario());
+        if (cajero != null) {
+            nombreCajero = cajero.getNombre() + " " + cajero.getApellido();
+        }
+ 
+        String tipoDoc = (String) cmbDoc.getSelectedItem();
+        String fechaHora = java.time.LocalDateTime.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+ 
+        String linea = "------------------------------------------";
+ 
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n").append(centrar("AHORRAMAX", linea.length())).append("\n");
+        sb.append(centrar("Bodega - Sistema de Ventas", linea.length())).append("\n");
+        sb.append(linea).append("\n");
+        sb.append(String.format("N. de Venta : %d%n", venta.getId()));
+        sb.append(String.format("Fecha       : %s%n", fechaHora));
+        sb.append(String.format("Cajero      : %s%n", nombreCajero));
+        sb.append(String.format("Cliente     : %s %s%n", tipoDoc, comprobante.getNumDoc()));
+        sb.append(linea).append("\n");
+        sb.append(String.format("%-10s %-18s %4s %8s%n", "CODIGO", "DESCRIPCION", "CANT", "SUBTOT"));
+        sb.append(linea).append("\n");
+ 
+        for (ItemVenta item : itemsVenta) {
+            sb.append(String.format("%-10s %-18s %4d %8.2f%n",
+                    item.getCodigo(),
+                    recortar(item.getDescripcion(), 18),
+                    item.getCantidad(),
+                    item.getSubtotal()));
+        }
+ 
+        sb.append(linea).append("\n");
+        sb.append(String.format("%-33s S/. %8.2f%n", "TOTAL A PAGAR", venta.getTotal()));
+        sb.append(String.format("FORMA DE PAGO : %s%n", comprobante.getTipoPago()));
+        sb.append(String.format("%-33s S/. %8.2f%n", "MONTO PAGADO", comprobante.getMontoPagado()));
+        sb.append(String.format("%-33s S/. %8.2f%n", "VUELTO", comprobante.getVuelto()));
+        sb.append(linea).append("\n");
+        sb.append(centrar("¡Gracias por su compra!", linea.length())).append("\n");
+        sb.append("\n");
+ 
+        System.out.println(sb.toString());
+    }
+ 
+    private String centrar(String texto, int ancho) {
+        if (texto.length() >= ancho) {
+            return texto;
+        }
+        int espacios = (ancho - texto.length()) / 2;
+        return " ".repeat(espacios) + texto;
+    }
+ 
+    private String recortar(String texto, int maxLargo) {
+        if (texto == null) {
+            return "";
+        }
+        return texto.length() <= maxLargo ? texto : texto.substring(0, maxLargo - 1) + ".";
     }
  
     private void limpiarTicketCompleto() {
@@ -245,6 +325,7 @@ public class VistaCaja extends javax.swing.JFrame {
         spiCant.setValue(1);
         txtIdProd.requestFocus();
     }
+ 
     // ================== FIN LÓGICA DE NEGOCIO ==================
 public static void main(String args[]) {
 
