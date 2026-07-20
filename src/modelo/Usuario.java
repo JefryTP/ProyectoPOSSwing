@@ -4,20 +4,32 @@ public class Usuario {
     private int id;
     private String dni;
     private String nombre;
+    private String apellido;
     private String telefono;
+    private String correo;
     private String clave;
     private int idRol;
     private String cargoRol; 
+    private int activo;
 
-    public Usuario(int id, String dni, String nombre, String telefono, String clave, int idRol, String cargoRol) {
+    public Usuario(int id, String dni, String nombre, String apellido, String telefono, String correo, String clave, int idRol, String cargoRol, int activo) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.telefono = telefono;
+        this.correo = correo;
         this.clave = clave;
         this.idRol = idRol;
         this.cargoRol = cargoRol;
+        this.activo = activo;
     }
+
+    
+    
+
+    
+    
 
     public Usuario() {
     }
@@ -77,5 +89,30 @@ public class Usuario {
     public void setCargoRol(String cargoRol) {
         this.cargoRol = cargoRol;
     }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public int getActivo() {
+        return activo;
+    }
+
+    public void setActivo(int activo) {
+        this.activo = activo;
+    }
+   
     
 }
