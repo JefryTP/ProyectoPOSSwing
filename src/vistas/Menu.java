@@ -19,9 +19,8 @@ public class Menu extends JFrame {
     public Menu() {
         setTitle("Proyecto POS - Menú Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 750); 
-        setLocationRelativeTo(null); 
-        setResizable(false);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        setLocationRelativeTo(null);
 
         // 1. Cargar iconos
         iconMap = loadIcons();
@@ -46,7 +45,7 @@ public class Menu extends JFrame {
         mainPanel.add(buttonPanel);
 
         // 5. Botones (Si el icono es null, el método addMenuButton dibuja un recuadro)
-        addMenuButton(buttonPanel, "Caja", null); 
+        addMenuButton(buttonPanel, "Caja", iconMap.get("caja")); 
         buttonPanel.add(Box.createVerticalStrut(25)); 
 
         addMenuButton(buttonPanel, "Usuarios", iconMap.get("usuario"));
@@ -100,15 +99,21 @@ public class Menu extends JFrame {
 
         // Lógica de los botones
         if (text.equals("Salir")) {
-            button.addActionListener(e -> {dispose(); // Cierra el login
+            button.addActionListener(e -> {dispose();
                     vistas.LoginElaborado ventanaLogin = new vistas.LoginElaborado();
                     ventanaLogin.setVisible(true);});
         }if (text.equals("Caja")) {
-            button.addActionListener(e -> {dispose(); // Cierra el login
+            button.addActionListener(e -> {dispose();
                     vistas.VistaCaja ventanaCaja = new vistas.VistaCaja();
                     ventanaCaja.setVisible(true);});
-        } else {
-            button.addActionListener(e -> System.out.println("Clic en: " + text));
+        }if (text.equals("Usuarios")) {
+            button.addActionListener(e -> {dispose();
+                    vistas.VistaAdminUsu ventanaUsu = new vistas.VistaAdminUsu();
+                    ventanaUsu.setVisible(true);});
+        }if (text.equals("Productos")) {
+            button.addActionListener(e -> {dispose();
+                    vistas.VistaAdminProduc ventanaProduct = new vistas.VistaAdminProduc();
+                    ventanaProduct.setVisible(true);});
         }
 
         container.add(button);
@@ -116,8 +121,8 @@ public class Menu extends JFrame {
 
     private Map<String, ImageIcon> loadIcons() {
         Map<String, ImageIcon> icons = new HashMap<>();
-        String[] fileKeys = {"logo", "usuario", "productos"};
-        String[] extensions = {".png", ".png", ".png"}; // <-- OJO AQUÍ
+        String[] fileKeys = {"logo","caja", "usuario", "productos"};
+        String[] extensions = {".png",".png", ".png", ".png"};
 
         for (int i = 0; i < fileKeys.length; i++) {
             String key = fileKeys[i];

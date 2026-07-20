@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import modelo.Producto;
 
 public class DAOProductoImpl extends Conexion implements DAOProducto{
-     
+ 
     @Override
     public Producto buscarPorCodigo(String codigo) throws Exception {
         Producto p = null;
         try {
             this.conectar();
             String sql = "SELECT id, codigo, descripcion, id_categoria, precio, activo "
-                    + "FROM producto WHERE codigo = ? AND activo = 1";
+                    + "FROM producto WHERE codigo = ?";
             PreparedStatement st = this.conn.prepareStatement(sql);
             st.setString(1, codigo);
             ResultSet rs = st.executeQuery();
@@ -26,11 +26,74 @@ public class DAOProductoImpl extends Conexion implements DAOProducto{
                 p.setPrecio(rs.getDouble("precio"));
                 p.setActivo(rs.getBoolean("activo"));
             }
+            rs.close();
+            st.close();
         } catch (Exception e) {
             throw e;
         } finally {
             this.cerrar();
         }
         return p;
+    }
+ 
+    @Override
+    public void registrar(Producto producto) throws Exception {
+        try {
+            this.conectar();
+            String sql = "INSERT INTO producto (codigo, descripcion, id_categoria, precio, activo) "
+                    + "VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement st = this.conn.prepareStatement(sql);
+            st.setString(1, producto.getCodigo());
+            st.setString(2, producto.getDescripcion());
+            st.setInt(3, producto.getIdCategoria());
+            st.setDouble(4, producto.getPrecio());
+            st.setBoolean(5, producto.isActivo());
+            st.executeUpdate();
+            st.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+    }
+ 
+    @Override
+    public void modificar(Producto producto) throws Exception {
+        try {
+            this.conectar();
+            String sql = "UPDATE producto SET descripcion = ?, id_categoria = ?, precio = ?, activo = ? "
+                    + "WHERE id = ?";
+            PreparedStatement st = this.conn.prepareStatement(sql);
+            st.setString(1, producto.getDescripcion());
+            st.setInt(2, producto.getIdCategoria());
+            st.setDouble(3, producto.getPrecio());
+            st.setBoolean(4, producto.isActivo());
+            st.setInt(5, producto.getId());
+            st.executeUpdate();
+            st.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+    }
+ 
+    @Override
+    public void eliminar(int id) throws Exception {
+        try {
+            this.conectar();
+            String sql = "DELETE FROM producto WHERE id = ?";
+            PreparedStatement st = this.conn.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
+        } catch (Exception e) {
+            // Si el producto ya tiene ventas asociadas, MySQL rechaza el DELETE
+            // por la restricción de llave foránea (detalle_venta.id_producto).
+            // Se relanza la excepción; el Controller decide el mensaje amigable.
+            throw e;
+        } finally {
+            this.cerrar();
+        }
     }
 }
